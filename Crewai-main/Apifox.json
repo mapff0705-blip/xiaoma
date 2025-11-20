@@ -1,0 +1,227 @@
+{
+  "apifoxProject": "1.0.0",
+  "$schema": {
+    "app": "apifox",
+    "type": "project",
+    "version": "1.2.0"
+  },
+  "info": {
+    "name": "CrewAI 任务管理 API",
+    "description": "启动 CrewAI 任务（支持图片上传）并查询执行状态"
+  },
+  "apiCollection": [
+    {
+      "name": "根目录",
+      "id": 1,
+      "parentId": 0,
+      "items": [
+        {
+          "name": "启动 CrewAI 任务",
+          "api": {
+            "id": "api_crewai_post",
+            "method": "post",
+            "path": "/api/crewai",
+            "parameters": {
+              "query": [],
+              "path": [],
+              "header": [],
+              "cookie": []
+            },
+            "requestBody": {
+              "type": "multipart/form-data",
+              "parameters": [
+                {
+                  "name": "target_platform",
+                  "type": "string",
+                  "required": true,
+                  "in": "formData",
+                  "description": "目标平台（如 https://www.emqx.com/zh）"
+                },
+                {
+                  "name": "creator_niche",
+                  "type": "string",
+                  "required": true,
+                  "in": "formData",
+                  "description": "创作者领域或项目描述"
+                },
+                {
+                  "name": "file",
+                  "type": "file",
+                  "required": false,
+                  "in": "formData",
+                  "description": "可选：上传 JPG/PNG 图片，用于多模态分析"
+                }
+              ]
+            },
+            "responses": [
+              {
+                "id": "resp_crewai_success",
+                "code": 200,
+                "name": "成功",
+                "contentType": "application/json",
+                "jsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "job_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": ["job_id"]
+                }
+              }
+            ],
+            "cases": [
+              {
+                "id": "case_crewai_no_image",
+                "name": "成功（无图片）",
+                "type": "http",
+                "responseId": "resp_crewai_success",
+                "parameters": {
+                  "query": [],
+                  "path": [],
+                  "header": [],
+                  "cookie": []
+                },
+                "requestBody": {
+                  "type": "multipart/form-data",
+                  "data": {
+                    "target_platform": "https://www.emqx.com/zh",
+                    "creator_niche": "创建一个全面的营销活动，以提高企业客户对 EMQX 服务的认识和采用。"
+                  },
+                  "generateMode": "normal"
+                }
+              },
+              {
+                "id": "case_crewai_with_image",
+                "name": "成功（带图片）",
+                "type": "http",
+                "responseId": "resp_crewai_success",
+                "parameters": {
+                  "query": [],
+                  "path": [],
+                  "header": [],
+                  "cookie": []
+                },
+                "requestBody": {
+                  "type": "multipart/form-data",
+                  "data": {
+                    "target_platform": "https://example.com",
+                    "creator_niche": "根据这张产品图生成推广文案"
+                  },
+                  "files": [
+                    {
+                      "name": "file",
+                      "fileName": "product.jpg",
+                      "contentType": "image/jpeg"
+                    }
+                  ],
+                  "generateMode": "normal"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "获取 CrewAI 任务详情",
+          "api": {
+            "id": "api_crewai_get",
+            "method": "get",
+            "path": "/api/crewai/{job_id}",
+            "parameters": {
+              "query": [],
+              "path": [
+                {
+                  "name": "job_id",
+                  "type": "string",
+                  "required": true,
+                  "value": "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8"
+                }
+              ],
+              "header": [],
+              "cookie": []
+            },
+            "requestBody": {
+              "type": "none"
+            },
+            "responses": [
+              {
+                "id": "resp_crewai_detail",
+                "code": 200,
+                "name": "成功",
+                "contentType": "application/json",
+                "jsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "job_id": { "type": "string" },
+                    "status": { "type": "string", "enum": ["PENDING", "STARTED", "SUCCESS", "FAILURE"] },
+                    "result": { "type": ["object", "string"] },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "timestamp": { "type": "string", "format": "date-time" },
+                          "data": { "type": "string" }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["job_id", "status", "result", "events"]
+                }
+              },
+              {
+                "id": "resp_crewai_not_found",
+                "code": 404,
+                "name": "任务未找到",
+                "contentType": "application/json",
+                "jsonSchema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": { "type": "string" }
+                  }
+                }
+              }
+            ],
+            "cases": [
+              {
+                "id": "case_get_success",
+                "name": "成功",
+                "type": "http",
+                "responseId": "resp_crewai_detail",
+                "parameters": {
+                  "path": [
+                    {
+                      "name": "job_id",
+                      "value": "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8"
+                    }
+                  ],
+                  "query": [],
+                  "header": [],
+                  "cookie": []
+                },
+                "requestBody": {
+                  "type": "none"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "id": "env_local",
+      "name": "本地开发",
+      "baseUrl": "http://127.0.0.1:8012",
+      "type": "normal",
+      "visibility": "protected",
+      "variables": []
+    }
+  ],
+  "projectSetting": {
+    "language": "zh-CN",
+    "apiStatuses": ["developing", "testing", "released", "deprecated"]
+  }
+}

@@ -1,0 +1,42 @@
+
+vlog_concept_task:
+  description: >
+    基于 {creator_niche}、{target_platform} 及{crew_result} 提供的趋势洞察报告，选定一个最具传播潜力的 Vlog 主题，并明确核心价值主张。
+  expected_output: >
+    一份 Vlog 概念提案，包含：吸引眼球的标题（含情绪钩子）、一句话核心信息、目标观众共鸣点、以及预期互动效果（如引发评论/收藏）。
+  agent: vlog_content_strategist
+
+story_structure_task:
+  description: >
+    围绕已批准的 Vlog 概念，设计完整的叙事结构与节奏安排，确保内容在 {target_platform} 的推荐机制下具备高完播潜力。
+  expected_output: >
+    详细的故事板大纲，按时间轴划分（如 0-3s, 3-15s, 15-45s, 45-60s），标明每段的情绪目标、关键信息、视觉提示及转场逻辑。
+  agent: vlog_content_strategist
+
+scriptwriting_task:
+  description: >
+    根据故事结构大纲，撰写自然流畅、适合口播的完整 Vlog 脚本。语言需贴近创作者个人风格，避免书面化表达，并同步考虑配音与背景音乐的配合。
+  expected_output: >
+    一份可直接用于拍摄或 AI 配音的逐字稿脚本，包含：
+    - 开场白（<5秒强钩子）
+    - 主体台词（带语气/停顿提示，如[轻快]、[感慨]、[神秘]）
+    - 结尾互动引导（如“你觉得呢？评论区告诉我！”）
+    - 字幕重点标注（用【】标出）
+    - **BGM 推荐**：整体音乐风格（如“轻快吉他+Lo-fi节奏”、“治愈钢琴+环境白噪音”），适配情绪段落
+  agent: creative_scriptwriter
+
+publishing_optimization_task:
+  description: >
+    为该 Vlog 制定平台专属的发布优化方案，最大化曝光与互动机会，并整合音频元素提升沉浸感。
+  expected_output: >
+    一份发布执行清单，包含：
+    - 推荐发布时间（基于 {target_platform} 用户活跃时段）
+    - 封面文案（2种备选）
+    - 话题标签（#5个精准 + #2个泛流量）
+    - 首评预埋文案
+    - 前24小时互动维护建议
+    - **多平台 BGM 具体建议**：
+            • 若发布于 **抖音**：推荐使用“抖音热榜BGM”中的无版权曲目，如“Upbeat Indie Pop”类，强调前3秒旋律记忆点；
+            • 若发布于 **小红书**：建议使用“生活记录感”BGM，如“Acoustic Morning”或“Cafe Jazz”，音量较低以突出人声；
+            • 若发布于 **B站**：可选用带轻微叙事起伏的配乐（如“Emotional Cinematic”），允许更长铺垫，适配中长视频节奏。
+  agent: creative_scriptwriter

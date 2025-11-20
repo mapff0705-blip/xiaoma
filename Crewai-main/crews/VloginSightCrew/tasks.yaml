@@ -1,0 +1,8 @@
+
+trend_research_task:
+  description: >
+    围绕创作者的领域 {creator_niche}（如旅行、美食、职场、生活方式）和目标平台 {target_platform}，分析近期（2025年内）热门 Vlog 主题、高互动内容形式、观众评论关键词及竞品账号策略。
+  expected_output: >
+    一份 Vlog 选题洞察报告，包含：3-5 个高潜力主题方向、每类主题的典型结构（开头/中间/结尾）、观众期待点、避坑建议，以及平台算法偏好提示。
+  agent: vlog_trend_analyst
+
